@@ -6,9 +6,16 @@ import smtplib
 
 load_dotenv('Lazy Zabra Webpage\.env')
 
-recipient_email = 'geyerkristoffer@gmail.com'
+def send_email(self, name, email, message):
+  recipient_email = 'geyerkristoffer@gmail.com'
+  with smtplib.SMTP('smtp.gmail.com') as server:
+    email_body = "subject:Lazy Zebra Message!\n\n" + f"{name} is tring to contact you, please email back at {email}. Here is your message '{message}'"+ "\n From Vicky" 
+    server.starttls()
+    server.login(os.environ['SENDER_EMAIL'], os.environ['PASSWORD'])
+    server.sendmail(os.environ['SENDER_EMAIL'], recipient_email, email_body)
 
 app = Flask(__name__)
+app.send_email = send_email
 
 @app.route("/")
 def home_page ():
@@ -27,13 +34,6 @@ def blog(id):
     return render_template("blog.html", blog = blog_to_display, id = id)   
 
 
-def send_email(name, email, message):
-  with smtplib.SMTP('smtp.gmail.com') as server:
-    email_body = "subject:Lazy Zebra Message!\n\n" + f"{name} is tring to contact you, please email back at {email}. Here is your message '{message}'"+ "\n From Vicky" 
-    server.starttls()
-    server.login(os.environ['SENDER_EMAIL'], os.environ['PASSWORD'])
-    server.sendmail(os.environ['SENDER_EMAIL'], recipient_email, email_body)
-
 
 @app.route("/contact", methods = ["GET","POST"])
 def form_data ():
@@ -41,8 +41,8 @@ def form_data ():
     name = request.form["fullname"]
     email = request.form["email"]
     message = request.form["message"]
-    send_email(name, email, message)
-    print(f'email sent to {recipient_email}')
+    app.send_email(name, email, message)
+    print(f'email sent')
     return f'<h1> Message sent successfully! </h1>'
   else:
      return render_template('contact.html')
