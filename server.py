@@ -6,7 +6,7 @@ import smtplib
 
 load_dotenv('Lazy Zabra Webpage\.env')
 
-def send_email(self, name, email, message):
+def send_email(name, email, message):
   recipient_email = 'geyerkristoffer@gmail.com'
   with smtplib.SMTP('smtp.gmail.com') as server:
     email_body = "subject:Lazy Zebra Message!\n\n" + f"{name} is tring to contact you, please email back at {email}. Here is your message '{message}'"+ "\n From Vicky" 
