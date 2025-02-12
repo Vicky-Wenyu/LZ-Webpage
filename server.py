@@ -4,15 +4,15 @@ import os
 import requests
 import smtplib
 
-load_dotenv('Lazy Zabra Webpage\.env')
+load_dotenv('Lazy Zebra Webpage\.env')
 
 def send_email(name, email, message):
   recipient_email = 'geyerkristoffer@gmail.com'
   with smtplib.SMTP('smtp.gmail.com') as server:
     email_body = "subject:Lazy Zebra Message!\n\n" + f"{name} is tring to contact you, please email back at {email}. Here is your message '{message}'"+ "\n From Vicky" 
     server.starttls()
-    server.login(os.environ['SENDER_EMAIL'], os.environ['PASSWORD'])
-    server.sendmail(os.environ['SENDER_EMAIL'], recipient_email, email_body)
+    server.login(os.environ.get("SENDER_EMAIL"), os.environ.get('PASSWORD'))
+    server.sendmail(os.environ.get("SENDER_EMAIL"), recipient_email, email_body)
 
 app = Flask(__name__)
 app.send_email = send_email
