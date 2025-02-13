@@ -8,8 +8,10 @@ import logging
 load_dotenv('Lazy Zebra Webpage\.env')
 
 def send_email(name, email, message):
+  print('send email function called successfully')
   recipient_email = 'vicky.huangwy@gmail.com'
   with smtplib.SMTP('smtp.gmail.com') as server:
+    print ('connected to smtp server')
     email_body = "subject:Lazy Zebra Message!\n\n" + f"{name} is tring to contact you, please email back at {email}. Here is your message '{message}'"+ "\n From Vicky" 
     sender_email = os.environ.get("SENDER_EMAIL")
     sender_pw = os.environ.get('PASSWORD')
@@ -46,7 +48,6 @@ def form_data ():
     name = request.form["fullname"]
     email = request.form["email"]
     message = request.form["message"]
-    print(f"Executed: fetching name email and message successfully {name, email, message})")
     app.send_email(name, email, message)
     print(f'email sent')
     return f'<h1> Message sent successfully! </h1>'
